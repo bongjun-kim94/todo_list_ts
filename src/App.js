@@ -22,11 +22,15 @@ function App() {
     nextId.current += 1;
   };
 
+  const handleDelete = (id) => {
+    setTodos(todos.filter(todo => todo.id !== id));
+  };
+
   return (
     <>
       <Header />
       <CreateTodo handleSubmit={handleSubmit} />
-      <TodoList todos={todos} />
+      <TodoList todos={todos} handleDelete={handleDelete} />
     </>
   );
 }
