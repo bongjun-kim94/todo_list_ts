@@ -1,20 +1,23 @@
 import React, { useState } from 'react';
 import { Button, InputBase } from "@material-ui/core";
 
-function AddTodoForm() {
-    const [todo, setTodo] = useState(null);
+const CreateTodo = ({ handleSubmit }) => {
+    const [value, setValue] = useState('');
 
-    const onSubmit = () => {
-
+    const handleChange = (e) => {
+        setValue(e.target.value)
+        console.log(e.target.value);
     };
 
-    const handleChange = ({ target }) => {
-        setTodo(target.value)
-        console.log(target.value);
-    }
+    const onSubmit = (e) => {
+        e.preventDefault();
+        if(!value) return;
+        handleSubmit(value);
+        setValue('');
+    };
 
     // const handleChange = ({ target }) => {
-    //     setTodo(target.value)
+    //     setValue(target.value)
     //     console.log(target.value);
     // }
 
@@ -22,7 +25,7 @@ function AddTodoForm() {
         <div>
             <form onSubmit={onSubmit} style={{ display: "flex", margin: 10 }}>
                 <InputBase
-                    value={todo}
+                    value={value}
                     onChange={handleChange}
                     sx={{ ml: 1, flex: 1 }}
                     placeholder="TODO"
@@ -40,4 +43,4 @@ function AddTodoForm() {
     );
 }
 
-export default AddTodoForm;
+export default CreateTodo;
