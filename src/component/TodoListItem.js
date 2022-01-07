@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, memo } from 'react';
 import {
     Card,
     Checkbox,
@@ -11,7 +11,7 @@ import {
 } from "@material-ui/core";
 import { Clear, Create, SaveOutlined } from "@material-ui/icons";
 
-const TodoListItem = ({ todo, handleDelete, handleUpdate, handleCheck }) => {
+const TodoListItem = memo(({ todo, handleDelete, handleUpdate, handleCheck }) => {
     const { id, text, checked } = todo;
 
     // 수정모드인지 확인
@@ -81,6 +81,7 @@ const TodoListItem = ({ todo, handleDelete, handleUpdate, handleCheck }) => {
                                 style={{
                                 textDecoration: checked === true ? "line-through" : null,
                                 color: checked === true ? "#ccc" : "#000",
+                                
                             }}>
                                 {newText}
                             </ListItemText>
@@ -90,9 +91,7 @@ const TodoListItem = ({ todo, handleDelete, handleUpdate, handleCheck }) => {
                             {!checked === true ? (
                                 edit ? (
                                     <IconButton color="secondary" aria-label="Delete" onClick={onSubmitClick}>
-                                        <SaveOutlined style={{border: "none", background: "none"}}>
-                                            👌
-                                        </SaveOutlined>
+                                        <SaveOutlined fontSize="small" />
                                     </IconButton>
                                 ) : (
                                     <IconButton color="secondary" aria-label="Delete"  onClick={onEditClick}>
@@ -109,6 +108,6 @@ const TodoListItem = ({ todo, handleDelete, handleUpdate, handleCheck }) => {
             </Card>
         </>
     );
-}
+})
 
-export default TodoListItem;
+export default React.memo(TodoListItem);

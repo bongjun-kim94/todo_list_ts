@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useCallback} from 'react';
 import Header from './component/Header';
 import TodoList from './component/TodoList';
 import CreateTodo from './component/CreateTodo';
@@ -21,34 +21,43 @@ const App = () => {
 
   const nextId = useRef(2);
 
-  const handleSubmit = (text) => {
-    const todo = {
-      id: nextId.current,
-      text,
-      checked: false,
-    };
-    setTodos(todos.concat(todo));
-    nextId.current += 1;
-  };
+  const handleSubmit = useCallback(
+      (text) => {
+        const todo = {
+          id: nextId.current,
+          text,
+          checked: false,
+        };
+        setTodos(todos.concat(todo));
+        nextId.current += 1;
+        }, 
+      [todos]
+  );
 
-  const handleDelete = (id) => {
-    setTodos(todos.filter(todo => todo.id !== id));
-  };
+  const handleDelete = useCallback(
+      (id) => {
+      setTodos(todos.filter(todo => todo.id !== id));
+    }, 
+    [todos]
+  );
 
   const handleUpdate = () => {
     setTodos(todos.map((todo) => ({
       ...todo,
       text: todo.id === id ? newText : todo.text,
     })));
-    
+
     setNewText(newText);
   };
 
-  const handleCheck = (id) => {
-    setTodos(todos.map(todo => {
-      return todo.id === id ? { ...todo, checked: !todo.checked } : todo;
-    })); 
-  };
+  const handleCheck = useCallback(
+      (id) => {
+        setTodos(todos.map(todo => {
+          return todo.id === id ? { ...todo, checked: !todo.checked } : todo;
+        })); 
+      }, 
+    [todos]
+  );
 
   return (
     <>
@@ -61,4 +70,4 @@ const App = () => {
   );
 }
 
-export default App;
+export default React.memo(App);

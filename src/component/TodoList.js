@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { memo } from 'react';
 import TodoListItem from './TodoListItem';
 
-const TodoList = ({ todos, handleDelete, handleUpdate, handleCheck }) => {
+const TodoList = memo(({ todos, handleDelete, handleUpdate, handleCheck }) => {
     return (
         <>
             <div>
@@ -17,6 +17,6 @@ const TodoList = ({ todos, handleDelete, handleUpdate, handleCheck }) => {
             </div>
         </>
     );
-}
+})
 
 export default TodoList;

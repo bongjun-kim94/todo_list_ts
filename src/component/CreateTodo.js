@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { InputBase, IconButton } from "@material-ui/core";
 import { Add } from "@material-ui/icons";
 
@@ -6,17 +6,17 @@ const CreateTodo = ({ handleSubmit }) => {
     const [value, setValue] = useState('');
     const inputRef = useRef();
 
-    const handleChange = (e) => {
+    const handleChange = useCallback((e) => {
         setValue(e.target.value)
-    };
+    }, []);
 
-    const onSubmit = (e) => {
+    const onSubmit = useCallback((e) => {
         e.preventDefault();
         if(!value) return;
         handleSubmit(value);
         setValue('');
         console.log('onSubmit');
-    };
+    }, [handleSubmit, value]);
 
     useEffect(() => {
         inputRef.current.focus();
