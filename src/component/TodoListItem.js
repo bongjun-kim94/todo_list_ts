@@ -1,22 +1,58 @@
-import React from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import {
     Card,
     Checkbox,
     IconButton,
+    InputBase,
     List,
     ListItem,
     ListItemIcon,
     ListItemText,
 } from "@material-ui/core";
-import { Clear, Create } from "@material-ui/icons";
+import { Clear, Create, SaveOutlined } from "@material-ui/icons";
 
-const TodoListItem = ({ todo, handleDelete }) => {
-    const { id, text } = todo;
+const TodoListItem = ({ todo, handleDelete, handleUpdate, handleCheck }) => {
+    const { id, text, checked } = todo;
+
+    // 수정모드인지 확인
+    const [edit, setEdit] = useState(false);
+    // 새로운 text값
+    const [newText, setNewText] = useState(text);
+   
+    const editInput = useRef(null);
+
+    useEffect(() => {
+        if(edit) {
+            editInput.current.focus();
+        }
+    }, [edit])
+
+    const onEditClick = () => {
+        console.log('onUpdate');
+        setEdit(true);
+    }
+
+    const onChangeEditInput = (e) => {
+        setNewText(e.target.value);
+    }
+
+    const onSubmitClick = () => {
+        console.log('onUpdateSubmit');
+        handleUpdate(text);
+        
+        setEdit(false);
+    }
 
     const onRemove = () => {
+        console.log('onRemove');
         handleDelete(id);
     };
-    
+
+    const onCheck = () => {
+        console.log('onCheck');
+        handleCheck(id);
+    };
+
     return (
         <>
             <Card>
@@ -33,19 +69,38 @@ const TodoListItem = ({ todo, handleDelete }) => {
                 >
                     <ListItem role="listitem" button>
                         <ListItemIcon>
-                            <Checkbox tabIndex={-1} disableRipple />
+                            <Checkbox tabIndex={-1} disableRipple onClick={onCheck} />
                         </ListItemIcon>
-                        <ListItemText 
-                            // style={{
-                            //     textDecoration: checked ? "line-through" : null,
-                            //     color: checked ? "#ccc" : "#000",
-                            // }}
-                        >
-                            {text}
-                        </ListItemText>
-                        <IconButton color="secondary" aria-label="Delete">
-                            <Create fontSize="small" />
-                        </IconButton>
+                        {edit ? (
+                            <InputBase type="text" ref={editInput} value={newText} onChange={onChangeEditInput} style={{ width: "90%", fontSize: "14px", fontextDecoration: checked === true ? "line-through" : null,
+                            color: checked === true ? "#ccc" : "#000"}}
+                            autoFocus
+                            required />
+                        ) : (
+                            <ListItemText 
+                                style={{
+                                textDecoration: checked === true ? "line-through" : null,
+                                color: checked === true ? "#ccc" : "#000",
+                            }}>
+                                {newText}
+                            </ListItemText>
+                        )}
+                        {/* <IconButton color="secondary" aria-label="Delete"> */}
+                            {/* 완료한 일은 수정 불가하게 null 처리 */}
+                            {!checked === true ? (
+                                edit ? (
+                                    <IconButton color="secondary" aria-label="Delete" onClick={onSubmitClick}>
+                                        <SaveOutlined style={{border: "none", background: "none"}}>
+                                            👌
+                                        </SaveOutlined>
+                                    </IconButton>
+                                ) : (
+                                    <IconButton color="secondary" aria-label="Delete"  onClick={onEditClick}>
+                                        <Create fontSize="small" />
+                                    </IconButton>
+                                )
+                            ) : null}
+                        {/* </IconButton> */}
                         <IconButton color="secondary" aria-label="Delete" onClick={onRemove}>
                             <Clear fontSize="small" />
                         </IconButton>

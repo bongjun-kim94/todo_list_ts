@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Button, InputBase } from "@material-ui/core";
+import { InputBase, IconButton } from "@material-ui/core";
+import { Add } from "@material-ui/icons";
 
 const CreateTodo = ({ handleSubmit }) => {
     const [value, setValue] = useState('');
@@ -7,7 +8,6 @@ const CreateTodo = ({ handleSubmit }) => {
 
     const handleChange = (e) => {
         setValue(e.target.value)
-        console.log(e.target.value);
     };
 
     const onSubmit = (e) => {
@@ -15,6 +15,7 @@ const CreateTodo = ({ handleSubmit }) => {
         if(!value) return;
         handleSubmit(value);
         setValue('');
+        console.log('onSubmit');
     };
 
     useEffect(() => {
@@ -29,7 +30,7 @@ const CreateTodo = ({ handleSubmit }) => {
                     value={value}
                     onChange={handleChange}
                     sx={{ ml: 1, flex: 1 }}
-                    placeholder="TODO"
+                    placeholder="할 일을 입력하세요."
                     inputProps={{
                         "aria-label": "Description",
                     }}
@@ -37,9 +38,9 @@ const CreateTodo = ({ handleSubmit }) => {
                     autoFocus
                     required
                 />
-                <Button type="submit" variant="text" style={{ width: "10%" }}>
-                    Add
-                </Button>
+                <IconButton aria-label="Add" type="submit">
+                    <Add />
+                </IconButton>
             </form>
         </div>
     );
