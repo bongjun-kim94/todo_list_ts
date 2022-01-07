@@ -1,28 +1,32 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Button, InputBase } from "@material-ui/core";
 
-function AddTodoForm() {
-    const [todo, setTodo] = useState(null);
+const CreateTodo = ({ handleSubmit }) => {
+    const [value, setValue] = useState('');
+    const inputRef = useRef();
 
-    const onSubmit = () => {
-
+    const handleChange = (e) => {
+        setValue(e.target.value)
+        console.log(e.target.value);
     };
 
-    const handleChange = ({ target }) => {
-        setTodo(target.value)
-        console.log(target.value);
-    }
+    const onSubmit = (e) => {
+        e.preventDefault();
+        if(!value) return;
+        handleSubmit(value);
+        setValue('');
+    };
 
-    // const handleChange = ({ target }) => {
-    //     setTodo(target.value)
-    //     console.log(target.value);
-    // }
+    useEffect(() => {
+        inputRef.current.focus();
+    }, []);
 
     return (
         <div>
             <form onSubmit={onSubmit} style={{ display: "flex", margin: 10 }}>
                 <InputBase
-                    value={todo}
+                    ref={inputRef}
+                    value={value}
                     onChange={handleChange}
                     sx={{ ml: 1, flex: 1 }}
                     placeholder="TODO"
@@ -30,6 +34,7 @@ function AddTodoForm() {
                         "aria-label": "Description",
                     }}
                     style={{ width: "90%" }}
+                    autoFocus
                     required
                 />
                 <Button type="submit" variant="text" style={{ width: "10%" }}>
@@ -40,4 +45,4 @@ function AddTodoForm() {
     );
 }
 
-export default AddTodoForm;
+export default CreateTodo;
