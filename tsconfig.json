@@ -1,0 +1,25 @@
+{
+  "compierOptions": {
+    "baseUrl": "",
+    "module": "commonjs",
+    "target": "es6",
+    "lib": [
+      "dom", 
+      "dom.iterable", 
+      "esnext"
+    ],
+    "jsx": "preserve",
+    // "removeComments": true,
+    // "preserveConstEnums": true,
+    "esModuleInterop": true,
+    // "sourceMap": true,
+    "strict": true,
+    "noImplicitAny": true
+  },
+  "include": [
+    "src"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
+}
